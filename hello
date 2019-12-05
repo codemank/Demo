@@ -1,0 +1,34 @@
+DOCKER SWARM-
+Edit the /etc/hosts file
+192.168.1.103  dockermanager
+192.168.1.107  dockerworker1
+192.168.1.108  dockerworker2
+
+ping dockerworker1(to everyone)
+apt-get update
+inst pack & allow apt use repo over http= apt-get install apt-transport-https ca-certificates curl software-properties-common -y
+generate off key= curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+stable repo= add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+apt-get update
+apt-get install docker-ce
+systemctl start docker
+*systemctl enable docker
+
+usermod -aG docker manager
+usermod -aG docker worker1
+usermod -aG docker worker2
+
+su - manager
+docker run hello-world
+docker swarm init --advertise-addr 192.168.1.103
+join token' has been generated *
+on workers(tockens)= docker swarm join --token SWMTKN-1-4htf3vnzmbhc88vxjyguipo91ihmutrxi2p1si2de4whaqylr6-3oed1hnttwkalur1ey7zkdp9l 192.168.1.103:2377
+
+mstr= docker node ls
+
+create service= docker service create --name my-web1 --publish 8081:80 --replicas 2 nginx
+docker service ls
+docker service ps my-web1
+browser= localhost:8081
+*docker service scale my-web1=3
