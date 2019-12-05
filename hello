@@ -32,3 +32,13 @@ docker service ls
 docker service ps my-web1
 browser= localhost:8081
 *docker service scale my-web1=3
+
+
+update system
+apt-get install -y openjdk-8-jdk
+repo key= wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -
+echo deb http://pkg.jenkins.io/debian-stable binary/| sudo tee /etc/apt/sources.list.d/jenkins.list
+apt-get update
+apt-get install jenkins
+sudo systemctl start jenkins
+localhost:8080
